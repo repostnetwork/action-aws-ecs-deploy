@@ -1,45 +1,38 @@
 SHELL := /bin/bash
 AWS_REGION := ${AWS_REGION}
-AWS_ACCESS_KEY_ID := ${AWS_ACCESS_KEY_ID}
-AWS_SECRET_ACCESS_KEY := ${AWS_SECRET_ACCESS_KEY}
-IMAGE := ${IMAGE}
 PORT := ${PORT}
-COUNT := ${COUNT}
+CONTAINER_COUNT := ${CONTAINER_COUNT}
 CPU := ${CPU}
+ENV := ${ENV}
 MEMORY := ${MEMORY}
-BUCKET := ${BUCKET}
+TERRAFORM_BUCKET := ${TERRAFORM_BUCKET}
+GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 
 AWS_DIR=$(CURDIR)/terraform/amazon
 TERRAFORM_FLAGS :=
 AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
-		-var "access_key=$(AWS_ACCESS_KEY_ID)" \
-		-var "secret_key=$(AWS_SECRET_ACCESS_KEY)" \
-		-var "image=$(IMAGE)" \
+		-var "github_repository=$(GITHUB_REPOSITORY)" \
 		-var "port=$(PORT)" \
-		-var "count=$(COUNT)" \
+		-var "container_count=$(CONTAINER_COUNT)" \
 		-var "cpu=$(CPU)" \
+		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
-		-var "bucket=$(BUCKET)"
+		-var "bucket=$(TERRAFORM_BUCKET)"
 
 .PHONY: aws-init
 aws-init:
 	@:$(call check_defined, AWS_REGION, Amazon Region)
-	@:$(call check_defined, AWS_ACCESS_KEY_ID, Amazon Access Key ID)
-	@:$(call check_defined, AWS_SECRET_ACCESS_KEY, Amazon Secret Access Key)
-	@:$(call check_defined, IMAGE, Docker image to run)
-	@:$(call check_defined, PORT, Port to expose)
-	@:$(call check_defined, COUNT, Number of containers to run)
-	@:$(call check_defined, CPU, Fargate instance CPU units to provision (1 vCPU = 1024 CPU units))
-	@:$(call check_defined, MEMORY, Fargate instance memory to provision (in MiB))
-	@:$(call check_defined, BUCKET, s3 bucket name to store the terraform state)
+	@:$(call check_defined, PORT, Container port)
+	@:$(call check_defined, ENV, Environment (staging or production))
+	@:$(call check_defined, TERRAFORM_BUCKET, s3 bucket name to store the terraform state)
 	@cd $(AWS_DIR) && terraform init \
-		-backend-config "bucket=$(BUCKET)" \
+		-backend-config "bucket=$(TERRAFORM_BUCKET)" \
 		-backend-config "region=$(AWS_REGION)" \
 		$(AWS_TERRAFORM_FLAGS)
 
 .PHONY: terraform-validate
 terraform-validate: ## Validate terraform scripts.
-	@cd $(AWS_DIR) && echo "$$(docker run --rm -it --entrypoint bash -w '/mnt' -v $$(pwd):/mnt r.j3ss.co/terraform -c 'terraform validate -check-variables=false . && echo [OK] terraform')"
+	@cd $(AWS_DIR) && echo "$$(docker run --rm -it --entrypoint bash -w '/mnt' -v $$(pwd):/mnt hashicorp/terraform -c 'terraform validate -check-variables=false . && echo [OK] terraform')"
 
 .PHONY: aws-plan
 aws-plan: aws-init ## Run terraform plan for Amazon.
@@ -73,14 +66,11 @@ TMP_TERRAFORM_BINARY:=/tmp/terraform
 .PHONY: update-terraform
 update-terraform: ## Update terraform binary locally from the docker container.
 	@echo "Updating terraform binary..."
-	$(shell docker run --rm --entrypoint bash r.j3ss.co/terraform -c "cd \$\$$(dirname \$\$$(which terraform)) && tar -Pc terraform" | tar -xvC $(dir $(TMP_TERRAFORM_BINARY)) > /dev/null)
+	$(shell docker run --rm --entrypoint bash hashicorp/terraform -c "cd \$\$$(dirname \$\$$(which terraform)) && tar -Pc terraform" | tar -xvC $(dir $(TMP_TERRAFORM_BINARY)) > /dev/null)
 	sudo mv $(TMP_TERRAFORM_BINARY) $(TERRAFORM_BINARY)
 	sudo chmod +x $(TERRAFORM_BINARY)
 	@echo "Update terraform binary: $(TERRAFORM_BINARY)"
 	@terraform version
-
-.PHONY: test
-test: terraform-validate shellcheck ## Runs the tests on the repository.
 
 # if this session isn't interactive, then we don't want to allocate a
 # TTY, which would fail, but if it is interactive, we do want to attach
@@ -89,14 +79,6 @@ INTERACTIVE := $(shell [ -t 0 ] && echo 1 || echo 0)
 ifeq ($(INTERACTIVE), 1)
 	DOCKER_FLAGS += -t
 endif
-
-.PHONY: shellcheck
-shellcheck: ## Runs the shellcheck tests on the scripts.
-	docker run --rm -i $(DOCKER_FLAGS) \
-		--name shellcheck \
-		-v $(CURDIR):/usr/src:ro \
-		--workdir /usr/src \
-		r.j3ss.co/shellcheck ./test.sh
 
 .PHONY: help
 help:

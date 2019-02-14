@@ -1,13 +1,5 @@
-variable "access_key" {
-  default = "YOUR_ADMIN_ACCESS_KEY"
-}
-
-variable "secret_key" {
-  default = "YOUR_ADMIN_SECRET_KEY"
-}
-
 variable "region" {
-  default = "us-west-2"
+  default = "us-east-1"
 }
 
 variable "az_count" {
@@ -15,17 +7,14 @@ variable "az_count" {
   default     = "2"
 }
 
-variable "image" {
-  description = "Docker image to run in the ECS cluster"
-}
-
 variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
+  default = "8080"
 }
 
-variable "count" {
+variable "container_count" {
   description = "Number of docker containers to run"
-  default     = "2"
+  default     = "1"
 }
 
 variable "cpu" {
@@ -39,22 +28,45 @@ variable "memory" {
 }
 
 variable "bucket" {
-  default = "aws-github-actions"
+  description = "The s3 bucket to be used for terraform state"
+}
+
+variable "cluster_name" {
+  default = "repost"
+}
+
+variable "ecs_task_container_role" {
+  default = "ECSTaskAccess"
+}
+
+variable "ecs_task_execution_role" {
+  default = "ecsTaskExecutionRole"
+}
+
+variable "ecr_path" {
+  description = "Path of ECR containing all images"
+  default = "ecr_path"
+}
+
+variable "github_repository" {
+  description = "The github repository that kicked off this deploy. In the form of 'repostnetwork/service'. GITHUB_REPOSITORY is an enviornment variable from github actions."
+}
+
+variable "env" {
+  description = "Either 'staging' or 'production'"
 }
 
 provider "aws" {
   version = ">= 1.47.0"
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
-
+  profile = "default"
   region = "${var.region}"
 }
 
 terraform {
   backend "s3" {
     encrypt = true
-
+    region = "us-east-1"
     # Path to write state to.
-    key = "github.actions/aws-fargate"
+    key = "repost-terraform"
   }
 }
