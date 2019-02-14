@@ -49,7 +49,7 @@ variable "ecr_path" {
 }
 
 variable "github_repository" {
-  description = "The github repository that kicked off this deploy. In the form of 'repostnetwork/service'. GITHUB_REPOSITORY is an enviornment variable from github actions."
+  description = "The github repository that kicked off this deploy. In the form of 'repostnetwork/service-name'. GITHUB_REPOSITORY is an enviornment variable from github actions."
 }
 
 variable "env" {
