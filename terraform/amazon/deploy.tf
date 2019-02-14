@@ -3,20 +3,7 @@
 ##########################
 
 # Fetch AZs in the current region
-data "aws_availability_zones" "available" {}
 
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
-}
-
-data "aws_subnet" "default" {
-  count = "${length(data.aws_subnet_ids.default.ids)}"
-  id    = "${data.aws_subnet_ids.default.ids[count.index]}"
-}
 
 ##########################
 # Security Groups
@@ -102,20 +89,13 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
+
 ##########################
-# ECS
+# ECR & ECS
 ##########################
 
-data "aws_ecs_cluster" "main" {
-  cluster_name = "${var.cluster_name}"
-}
-
-data "aws_iam_role" "task_container_role" {
-  name = "${var.ecs_task_container_role}"
-}
-
-data "aws_iam_role" "task_execution_role" {
-  name = "${var.ecs_task_execution_role}"
+resource "aws_ecr_repository" "main" {
+  name = "${local.logical_name}"
 }
 
 resource "aws_ecs_task_definition" "main" {
@@ -132,7 +112,7 @@ resource "aws_ecs_task_definition" "main" {
 [
   {
     "cpu": ${var.cpu},
-    "image": "${local.image_name}",
+    "image": "${aws_ecr_repository.main.repository_url}:latest",
     "memory": ${var.memory},
     "name": "${local.logical_name}",
     "networkMode": "awsvpc",
