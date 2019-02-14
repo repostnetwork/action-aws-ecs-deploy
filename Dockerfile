@@ -1,7 +1,7 @@
-FROM repostnetwork/ecs-deploy:latest
+FROM repostnetwork/deploy-utils:latest
 
-LABEL "com.github.actions.name"="AWS Fargate"
-LABEL "com.github.actions.description"="Deploy to AWS Fargate on push to the master branch"
+LABEL "com.github.actions.name"="AWS ECS Deploy"
+LABEL "com.github.actions.description"="Deploy to ECS"
 LABEL "com.github.actions.icon"="cloud"
 LABEL "com.github.actions.color"="red"
 
