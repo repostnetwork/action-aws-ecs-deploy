@@ -119,6 +119,13 @@ resource "aws_ecs_task_definition" "main" {
       "awslogs-stream-prefix": "${local.logical_name}"
       }
     },
+    "healthCheck": {
+      "command": "CMD-SHELL,curl -f http://localhost:8080/actuator/health || exit 1",
+      "interval": "30",
+      "timeout" : "5",
+      "retries" : "3",
+      "startPeriod" : "60"
+    },
     "portMappings": [
       {
         "containerPort": ${var.port},
