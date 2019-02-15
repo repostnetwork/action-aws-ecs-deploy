@@ -24,3 +24,7 @@ data "aws_iam_role" "task_container_role" {
 data "aws_iam_role" "task_execution_role" {
   name = "${var.ecs_task_execution_role}"
 }
+
+data "aws_ecr_repository" "main" {
+  name = "${local.logical_name}"
+}
