@@ -70,7 +70,6 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name = "${local.logical_name}-target"
   port = 80
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.default.id}"
