@@ -93,10 +93,6 @@ resource "aws_alb_listener" "front_end" {
 # ECR & ECS
 ##########################
 
-resource "aws_ecr_repository" "main" {
-  name = "${local.logical_name}"
-}
-
 resource "aws_ecs_task_definition" "main" {
   family = "${local.logical_name}"
   network_mode = "awsvpc"
@@ -111,7 +107,7 @@ resource "aws_ecs_task_definition" "main" {
 [
   {
     "cpu": ${var.cpu},
-    "image": "${aws_ecr_repository.main.repository_url}:latest",
+    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
     "memory": ${var.memory},
     "name": "${local.logical_name}",
     "networkMode": "awsvpc",
