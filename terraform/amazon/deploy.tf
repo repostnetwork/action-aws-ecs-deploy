@@ -120,7 +120,7 @@ resource "aws_ecs_task_definition" "main" {
       }
     },
     "healthCheck": {
-      "command": "CMD-SHELL,curl -f http://localhost:8080/actuator/health || exit 1",
+      "command": ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"],
       "interval": "30",
       "timeout" : "5",
       "retries" : "3",
