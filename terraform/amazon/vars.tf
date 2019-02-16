@@ -56,6 +56,10 @@ variable "env" {
   description = "Either 'staging' or 'production'"
 }
 
+variable "health_check_endpoint" {
+  default = "/actuator/health"
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
