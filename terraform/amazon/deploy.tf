@@ -110,9 +110,8 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = <<DEFINITION
 [
   {
-    "cpu": ${var.cpu},
+    "cpu": 0,
     "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "memory": ${var.memory},
     "name": "${local.logical_name}",
     "networkMode": "awsvpc",
     "logConfiguration": {
