@@ -45,11 +45,6 @@ aws-apply: aws-init ## Run terraform apply for Amazon.
 		$(AWS_TERRAFORM_FLAGS) \
 		$(TERRAFORM_FLAGS)
 
-.PHONY: aws-destroy
-aws-destroy: aws-init ## Run terraform destroy for Amazon.
-	@cd $(AWS_DIR) && terraform destroy \
-		$(AWS_TERRAFORM_FLAGS)
-
 check_defined = \
 				$(strip $(foreach 1,$1, \
 				$(call __check_defined,$1,$(strip $(value 2)))))
