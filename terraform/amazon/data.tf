@@ -28,3 +28,7 @@ data "aws_iam_role" "task_execution_role" {
 data "aws_ecr_repository" "main" {
   name = "${local.logical_name}"
 }
+
+data "aws_route53_zone" "selected" {
+  name         = "${local.aws_route53_zone_name}"
+}
