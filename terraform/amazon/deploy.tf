@@ -140,6 +140,15 @@ resource "aws_ecs_task_definition" "main" {
 DEFINITION
 }
 
+resource "aws_route53_record" "main" {
+  zone_id = "${data.aws_route53_zone.selected.zone_id}"
+  name    = "${local.aws_route53_record_name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_alb.main.dns_name}"]
+}
+
+// todo discuss autoscaling with joey https://cwong47.gitlab.io/technology-terraform-aws-ecs-autoscale/
 resource "aws_ecs_service" "main" {
   name = "${local.logical_name}"
   cluster = "${data.aws_ecs_cluster.main.id}"

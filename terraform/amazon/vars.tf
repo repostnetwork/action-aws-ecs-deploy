@@ -2,11 +2,6 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "az_count" {
-  description = "Number of availability zones to cover in a given AWS region"
-  default     = "2"
-}
-
 variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
   default = "8080"
