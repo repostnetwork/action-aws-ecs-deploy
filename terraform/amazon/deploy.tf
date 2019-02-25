@@ -70,7 +70,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name = "${substr(local.logical_name, 0, min(length(local.logical_name)), 32)}"
+  name = "${substr(local.logical_name, 0, min(length(local.logical_name), 32))}"
   port = "${var.port}"
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.default.id}"
