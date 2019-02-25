@@ -2,6 +2,10 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable logical_name {
+  description = "The base name to use for all aws resources."
+}
+
 variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
   default = "8080"

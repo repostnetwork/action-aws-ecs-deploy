@@ -12,7 +12,7 @@
 # ALB Security group
 # This is the group you need to edit if you want to restrict access to your application
 resource "aws_security_group" "lb" {
-  name = "${local.logical_name}-lb"
+  name = "${var.logical_name}-lb"
   description = "controls access to the ALB"
   vpc_id = "${data.aws_vpc.default.id}"
 
@@ -35,7 +35,7 @@ resource "aws_security_group" "lb" {
 
 # Traffic to the ECS Cluster should only come from the ALB
 resource "aws_security_group" "ecs_tasks" {
-  name = "${local.logical_name}"
+  name = "${var.logical_name}"
   description = "allow inbound access from the ALB only"
   vpc_id = "${data.aws_vpc.default.id}"
 
@@ -62,7 +62,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_alb" "main" {
   load_balancer_type = "application"
-  name = "${local.logical_name}-lb"
+  name = "${var.logical_name}-lb"
   subnets = [
     "${data.aws_subnet.default.*.id}"]
   security_groups = [
@@ -70,7 +70,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name = "${substr(local.logical_name, 0, min(length(local.logical_name), 32))}"
+  name = "${substr(var.logical_name, 0, min(length(var.logical_name), 32))}"
   port = "${var.port}"
   protocol = "HTTP"
   vpc_id = "${data.aws_vpc.default.id}"
@@ -99,7 +99,7 @@ resource "aws_alb_listener" "front_end" {
 ##########################
 
 resource "aws_ecs_task_definition" "main" {
-  family = "${local.logical_name}"
+  family = "${var.logical_name}"
   network_mode = "awsvpc"
   requires_compatibilities = [
     "FARGATE"]
@@ -113,14 +113,14 @@ resource "aws_ecs_task_definition" "main" {
   {
     "cpu": 0,
     "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "name": "${local.logical_name}",
+    "name": "${var.logical_name}",
     "networkMode": "awsvpc",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-      "awslogs-group": "ecs/${local.logical_name}",
+      "awslogs-group": "ecs/${var.logical_name}",
       "awslogs-region": "${var.region}",
-      "awslogs-stream-prefix": "${local.logical_name}"
+      "awslogs-stream-prefix": "${var.logical_name}"
       }
     },
     "healthCheck": {
@@ -151,7 +151,7 @@ resource "aws_route53_record" "main" {
 
 // todo discuss autoscaling with joey https://cwong47.gitlab.io/technology-terraform-aws-ecs-autoscale/
 resource "aws_ecs_service" "main" {
-  name = "${local.logical_name}"
+  name = "${var.logical_name}"
   cluster = "${data.aws_ecs_cluster.main.id}"
   task_definition = "${aws_ecs_task_definition.main.arn}"
   desired_count = "${var.container_count}"
@@ -170,7 +170,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.app.id}"
-    container_name = "${local.logical_name}"
+    container_name = "${var.logical_name}"
     container_port = "${var.port}"
   }
 
