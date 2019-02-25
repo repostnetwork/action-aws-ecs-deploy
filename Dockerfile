@@ -5,6 +5,7 @@ LABEL "com.github.actions.description"="Deploy to ECS"
 LABEL "com.github.actions.icon"="cloud"
 LABEL "com.github.actions.color"="red"
 
+ENV TERRAFORM_BUCKET "repost-terraform"
 ENV AWS_REGION "us-east-1"
 ENV PORT "8080"
 ENV CONTAINER_COUNT "1"

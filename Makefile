@@ -6,6 +6,7 @@ LOGICAL_NAME := ${LOGICAL_NAME}
 CPU := ${CPU}
 ENV := ${ENV}
 MEMORY := ${MEMORY}
+TERRAFORM_BUCKET := ${TERRAFORM_BUCKET}
 GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 
 AWS_DIR=$(CURDIR)/terraform/amazon
@@ -17,7 +18,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "cpu=$(CPU)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
-		-var "logical_name=$(LOGICAL_NAME)"
+		-var "logical_name=$(LOGICAL_NAME)" \
+		-var "bucket=$(TERRAFORM_BUCKET)"
 
 .PHONY: aws-init
 aws-init:
@@ -27,7 +29,8 @@ aws-init:
 	@:$(call check_defined, ENV, Environment (staging or production))
 	@:$(call check_defined, TERRAFORM_BUCKET, s3 bucket name to store the terraform state)
 	@cd $(AWS_DIR) && terraform init \
-		-backend-config "bucket=repost-terraform-$(ENV)-$(LOGICAL_NAME)" \
+		-backend-config "bucket=$(TERRAFORM_BUCKET)" \
+		-backend-config "key=$(LOGICAL_NAME)" \
 		-backend-config "region=$(AWS_REGION)" \
 		$(AWS_TERRAFORM_FLAGS)
 
