@@ -6,7 +6,7 @@ LOGICAL_NAME := ${LOGICAL_NAME}
 CPU := ${CPU}
 ENV := ${ENV}
 MEMORY := ${MEMORY}
-TERRAFORM_BUCKET := repost-network-${ENV}
+TERRAFORM_BUCKET := repost-terraform-${ENV}
 GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 
 AWS_DIR=$(CURDIR)/terraform/amazon
