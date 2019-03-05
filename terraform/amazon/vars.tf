@@ -69,7 +69,5 @@ terraform {
   backend "s3" {
     encrypt = true
     region = "us-east-1"
-    # Path to write state to.
-    # key = "${var.logical_name}"
   }
 }
