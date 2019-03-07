@@ -157,8 +157,8 @@ resource "aws_ecs_service" "main" {
   desired_count = "${var.container_count}"
   launch_type = "FARGATE"
   health_check_grace_period_seconds = 10
-  deployment_minimum_healthy_percent = 100
-  deployment_maximum_percent = 200
+  deployment_minimum_healthy_percent = "${local.min_healthy_percent}"
+  deployment_maximum_percent = "${local.max_healthy_percent}"
 
   network_configuration {
     security_groups = [
