@@ -97,9 +97,9 @@ resource "aws_alb_listener" "front_end" {
 # Logs
 ##########################
 
-resource "aws_cloudwatch_log_group" "main" {
-  name = "ecs/${var.logical_name}"
-}
+//resource "aws_cloudwatch_log_group" "main" {
+//  name = "ecs/${var.logical_name}"
+//}
 
 ##########################
 # ECR & ECS
@@ -125,7 +125,7 @@ resource "aws_ecs_task_definition" "main" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-      "awslogs-group": "${aws_cloudwatch_log_group.main.name}",
+      "awslogs-group": "ecs/${var.logical_name}",
       "awslogs-region": "${var.region}",
       "awslogs-stream-prefix": "${var.logical_name}"
       }
