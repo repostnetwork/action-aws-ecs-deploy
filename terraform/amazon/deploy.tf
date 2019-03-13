@@ -18,10 +18,20 @@ resource "aws_security_group" "lb" {
 
   ingress {
     protocol = "tcp"
+    from_port = 443
+    to_port = 443
+    cidr_blocks = [
+      "0.0.0.0/0", "::/0"
+    ]
+  }
+
+  ingress {
+    protocol = "tcp"
     from_port = 80
     to_port = 80
     cidr_blocks = [
-      "0.0.0.0/0"]
+      "0.0.0.0/0"
+    ]
   }
 
   egress {
@@ -29,7 +39,8 @@ resource "aws_security_group" "lb" {
     to_port = 0
     protocol = "-1"
     cidr_blocks = [
-      "0.0.0.0/0"]
+      "0.0.0.0/0"
+    ]
   }
 }
 
@@ -82,10 +93,21 @@ resource "aws_alb_target_group" "app" {
 }
 
 # Redirect all traffic from the ALB to the target group
-resource "aws_alb_listener" "front_end" {
+resource "aws_alb_listener" "http" {
   load_balancer_arn = "${aws_alb.main.id}"
   port = "80"
   protocol = "HTTP"
+
+  default_action {
+    target_group_arn = "${aws_alb_target_group.app.id}"
+    type = "forward"
+  }
+}
+
+resource "aws_alb_listener" "https" {
+  load_balancer_arn = "${aws_alb.main.id}"
+  port = "443"
+  protocol = "HTTPS"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.app.id}"
@@ -182,6 +204,7 @@ resource "aws_ecs_service" "main" {
   }
 
   depends_on = [
-    "aws_alb_listener.front_end",
+    "aws_alb_listener.http",
+    "aws_alb_listener.https"
   ]
 }
