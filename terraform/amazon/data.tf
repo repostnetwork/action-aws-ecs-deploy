@@ -32,3 +32,7 @@ data "aws_ecr_repository" "main" {
 data "aws_route53_zone" "selected" {
   name         = "${local.aws_route53_zone_name}"
 }
+
+data "aws_acm_certificate" "main" {
+  domain = "*.${local.domain_name}"
+}

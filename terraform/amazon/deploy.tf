@@ -93,6 +93,7 @@ resource "aws_alb_target_group" "app" {
 }
 
 # Redirect all traffic from the ALB to the target group
+
 resource "aws_alb_listener" "http" {
   load_balancer_arn = "${aws_alb.main.id}"
   port = "80"
@@ -108,6 +109,8 @@ resource "aws_alb_listener" "https" {
   load_balancer_arn = "${aws_alb.main.id}"
   port = "443"
   protocol = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn = "${data.aws_acm_certificate.main.arn}"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.app.id}"
