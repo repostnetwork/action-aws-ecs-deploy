@@ -21,7 +21,16 @@ resource "aws_security_group" "lb" {
     from_port = 443
     to_port = 443
     cidr_blocks = [
-      "0.0.0.0/0", "::/0"
+      "0.0.0.0/0"
+    ]
+  }
+
+  ingress {
+    protocol = "tcp"
+    from_port = 443
+    to_port = 443
+    ipv6_cidr_blocks = [
+      "::/0"
     ]
   }
 
