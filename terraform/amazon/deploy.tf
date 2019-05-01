@@ -183,6 +183,7 @@ DEFINITION
 }
 
 resource "aws_route53_record" "main" {
+  count = "${var.is_worker ? 0 : 1}" # no cname if worker
   zone_id = "${data.aws_route53_zone.selected.zone_id}"
   name    = "${local.aws_route53_record_name}"
   type    = "CNAME"
@@ -210,6 +211,7 @@ resource "aws_ecs_service" "main" {
   }
 
   load_balancer {
+    count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
     target_group_arn = "${aws_alb_target_group.app.id}"
     container_name = "${var.logical_name}"
     container_port = "${var.port}"

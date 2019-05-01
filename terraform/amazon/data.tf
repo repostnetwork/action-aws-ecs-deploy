@@ -34,5 +34,5 @@ data "aws_route53_zone" "selected" {
 }
 
 data "aws_acm_certificate" "main" {
-  domain = "*.${local.domain_name}"
+  domain = "*.services.${local.domain_name}"
 }
