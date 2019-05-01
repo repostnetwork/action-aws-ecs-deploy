@@ -104,6 +104,7 @@ resource "aws_alb_target_group" "app" {
 # Redirect all traffic from the ALB to the target group
 
 resource "aws_alb_listener" "http" {
+  count = "${var.is_worker ? 0 : 1}" # no cname if worker
   load_balancer_arn = "${aws_alb.main.id}"
   port = "80"
   protocol = "HTTP"
@@ -115,6 +116,7 @@ resource "aws_alb_listener" "http" {
 }
 
 resource "aws_alb_listener" "https" {
+  count = "${var.is_worker ? 0 : 1}" # no cname if worker
   load_balancer_arn = "${aws_alb.main.id}"
   port = "443"
   protocol = "HTTPS"
@@ -192,7 +194,8 @@ resource "aws_route53_record" "main" {
 }
 
 // todo discuss autoscaling with joey https://cwong47.gitlab.io/technology-terraform-aws-ecs-autoscale/
-resource "aws_ecs_service" "main" {
+resource "aws_ecs_service" "web" {
+  count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
   name = "${var.logical_name}"
   cluster = "${data.aws_ecs_cluster.main.id}"
   task_definition = "${aws_ecs_task_definition.main.arn}"
@@ -211,7 +214,6 @@ resource "aws_ecs_service" "main" {
   }
 
   load_balancer {
-    count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
     target_group_arn = "${aws_alb_target_group.app.id}"
     container_name = "${var.logical_name}"
     container_port = "${var.port}"
@@ -221,4 +223,24 @@ resource "aws_ecs_service" "main" {
     "aws_alb_listener.http",
     "aws_alb_listener.https"
   ]
+}
+
+resource "aws_ecs_service" "worker" {
+  count = "${var.is_worker ? 1 : 0}" # no load balancer if worker
+  name = "${var.logical_name}"
+  cluster = "${data.aws_ecs_cluster.main.id}"
+  task_definition = "${aws_ecs_task_definition.main.arn}"
+  desired_count = "${var.container_count}"
+  launch_type = "FARGATE"
+  health_check_grace_period_seconds = 10
+  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent = "${local.max_healthy_percent}"
+
+  network_configuration {
+    security_groups = [
+      "${aws_security_group.ecs_tasks.id}"]
+    subnets = [
+      "${data.aws_subnet.default.*.id}"]
+    assign_public_ip = true
+  }
 }
