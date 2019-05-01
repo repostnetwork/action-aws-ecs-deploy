@@ -8,6 +8,10 @@ ENV := ${ENV}
 MEMORY := ${MEMORY}
 TERRAFORM_BUCKET := repost-terraform-${ENV}
 GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
+IS_WORKER := ${IS_WORKER}
+ifndef IS_WORKER
+    IS_WORKER := false
+endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
 TERRAFORM_FLAGS :=
@@ -19,7 +23,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
 		-var "logical_name=$(LOGICAL_NAME)" \
-		-var "bucket=$(TERRAFORM_BUCKET)"
+		-var "bucket=$(TERRAFORM_BUCKET)" \
+		-var "is_worker=$(IS_WORKER)"
 
 .PHONY: aws-init
 aws-init:

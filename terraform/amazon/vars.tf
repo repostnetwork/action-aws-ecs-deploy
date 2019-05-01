@@ -59,6 +59,11 @@ variable "health_check_endpoint" {
   default = "/actuator/health"
 }
 
+variable "is_worker" {
+  description = "Boolean: True if this ecs task is a worker. False otherwise."
+  default = false
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
