@@ -220,7 +220,6 @@ resource "aws_ecs_service" "web" {
   }
 
   depends_on = [
-    "aws_alb_listener.http",
     "aws_alb_listener.https"
   ]
 }
