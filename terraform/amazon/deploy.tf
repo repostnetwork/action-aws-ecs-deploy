@@ -103,17 +103,17 @@ resource "aws_alb_target_group" "app" {
 
 # Redirect all traffic from the ALB to the target group
 
-resource "aws_alb_listener" "http" {
-  count = "${var.is_worker ? 0 : 1}" # no cname if worker
-  load_balancer_arn = "${aws_alb.main.id}"
-  port = "80"
-  protocol = "HTTP"
-
-  default_action {
-    target_group_arn = "${aws_alb_target_group.app.id}"
-    type = "forward"
-  }
-}
+//resource "aws_alb_listener" "http" {
+//  count = "${var.is_worker ? 0 : 1}" # no cname if worker
+//  load_balancer_arn = "${aws_alb.main.id}"
+//  port = "80"
+//  protocol = "HTTP"
+//
+//  default_action {
+//    target_group_arn = "${aws_alb_target_group.app.id}"
+//    type = "forward"
+//  }
+//}
 
 resource "aws_alb_listener" "https" {
   count = "${var.is_worker ? 0 : 1}" # no cname if worker
@@ -133,9 +133,9 @@ resource "aws_alb_listener" "https" {
 # Logs
 ##########################
 
-//resource "aws_cloudwatch_log_group" "main" {
-//  name = "ecs/${var.logical_name}"
-//}
+#resource "aws_cloudwatch_log_group" "main" {
+#  name = "ecs/${var.logical_name}"
+#}
 
 ##########################
 # ECR & ECS
@@ -193,7 +193,7 @@ resource "aws_route53_record" "main" {
   records = ["${aws_alb.main.dns_name}"]
 }
 
-// todo discuss autoscaling with joey https://cwong47.gitlab.io/technology-terraform-aws-ecs-autoscale/
+# todo discuss autoscaling with joey https://cwong47.gitlab.io/technology-terraform-aws-ecs-autoscale/
 resource "aws_ecs_service" "web" {
   count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
   name = "${var.logical_name}"
