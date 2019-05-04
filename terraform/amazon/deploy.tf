@@ -239,6 +239,6 @@ resource "aws_ecs_service" "worker" {
       "${aws_security_group.ecs_tasks.id}"]
     subnets = [
       "${data.aws_subnet.default.*.id}"]
-    assign_public_ip = false
+    assign_public_ip = true
   }
 }
