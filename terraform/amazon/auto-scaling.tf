@@ -53,7 +53,7 @@ resource "aws_appautoscaling_policy" "down" {
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
   count               = "${var.autoscaling_enabled == "true" ? 1 : 0}"
-  alarm_name          = "${var.logical_name}-RequestCountPerTarget-High"
+  alarm_name          = "${var.logical_name}-CPUUtilization-High"
   alarm_description   = "Managed by Terraform"
   alarm_actions       = ["${aws_appautoscaling_policy.up.arn}"]
   # ok_actions          = ["${var.alarm_pagerduty_sns}"]
@@ -73,7 +73,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_low" {
   count               = "${var.autoscaling_enabled == "true" ? 1 : 0}"
-  alarm_name          = "${var.logical_name}-RequestCountPerTarget-Low"
+  alarm_name          = "${var.logical_name}-CPUUtilization-Low"
   alarm_description   = "Managed by Terraform"
   alarm_actions       = ["${aws_appautoscaling_policy.down.arn}"]
   # ok_actions          = ["${var.alarm_pagerduty_sns}"]
