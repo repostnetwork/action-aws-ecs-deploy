@@ -64,6 +64,38 @@ variable "is_worker" {
   default = false
 }
 
+variable "autoscaling_enabled" {
+  default = false
+}
+
+variable "autoscaling_min_capacity" {
+  default = 1
+}
+
+variable "autoscaling_max_capacity" {
+  default = 4
+}
+
+variable "autoscaling_alarm_evaluation_periods" {
+  default = 2
+}
+
+variable "autoscaling_alarm_period" {
+  default = 60
+}
+
+variable "autoscaling_alarm_statistic" {
+  default = "Average"
+}
+
+variable "autoscaling_alarm_threshold_high" {
+  default = 85
+}
+
+variable "autoscaling_alarm_threshold_low" {
+  default = 10
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
