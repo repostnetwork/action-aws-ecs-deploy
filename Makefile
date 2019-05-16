@@ -12,6 +12,9 @@ IS_WORKER := ${IS_WORKER}
 ifndef IS_WORKER
     IS_WORKER := false
 endif
+ifndef AUTOSCALING_ENABLED
+    AUTOSCALING_ENABLED := false
+endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
 TERRAFORM_FLAGS :=
@@ -24,7 +27,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "memory=$(MEMORY)" \
 		-var "logical_name=$(LOGICAL_NAME)" \
 		-var "bucket=$(TERRAFORM_BUCKET)" \
-		-var "is_worker=$(IS_WORKER)"
+		-var "is_worker=$(IS_WORKER)" \
+		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)"
 
 .PHONY: aws-init
 aws-init:
