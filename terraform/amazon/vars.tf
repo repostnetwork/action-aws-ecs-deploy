@@ -85,7 +85,7 @@ variable "autoscaling_datapoints_to_alarm" {
 }
 
 variable "autoscaling_alarm_period" {
-  default = 30
+  default = 60
 }
 
 variable "autoscaling_alarm_statistic" {
