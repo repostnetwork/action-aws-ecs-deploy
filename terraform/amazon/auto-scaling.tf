@@ -64,6 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
   period              = "${var.autoscaling_alarm_period}"
   statistic           = "${var.autoscaling_alarm_statistic}"
   threshold           = "${var.autoscaling_alarm_threshold_high}"
+  datapoints_to_alarm = "${var.autoscaling_datapoints_to_alarm}"
 
   dimensions {
     ClusterName = "${var.cluster_name}"
@@ -84,6 +85,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_low" {
   period              = "${var.autoscaling_alarm_period}"
   statistic           = "${var.autoscaling_alarm_statistic}"
   threshold           = "${var.autoscaling_alarm_threshold_low}"
+  datapoints_to_alarm = "${var.autoscaling_datapoints_to_alarm}"
 
   dimensions {
     ClusterName = "${var.cluster_name}"

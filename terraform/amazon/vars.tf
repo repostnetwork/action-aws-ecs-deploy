@@ -77,11 +77,15 @@ variable "autoscaling_max_capacity" {
 }
 
 variable "autoscaling_alarm_evaluation_periods" {
+  default = 3
+}
+
+variable "autoscaling_datapoints_to_alarm" {
   default = 2
 }
 
 variable "autoscaling_alarm_period" {
-  default = 60
+  default = 30
 }
 
 variable "autoscaling_alarm_statistic" {
@@ -93,7 +97,7 @@ variable "autoscaling_alarm_threshold_high" {
 }
 
 variable "autoscaling_alarm_threshold_low" {
-  default = 10
+  default = 20
 }
 
 provider "aws" {
