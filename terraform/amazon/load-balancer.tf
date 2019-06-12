@@ -16,6 +16,7 @@ resource "aws_alb_target_group" "app" {
   health_check {
     path = "${var.health_check_endpoint}"
     port = "${var.port}"
+    interval = 45
   }
 }
 
