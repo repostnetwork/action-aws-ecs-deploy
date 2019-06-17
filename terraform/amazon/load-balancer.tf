@@ -1,4 +1,5 @@
 resource "aws_alb" "main" {
+  count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
   load_balancer_type = "application"
   name = "${var.logical_name}-lb"
   subnets = [
@@ -8,6 +9,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
+  count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
   name = "${substr(var.logical_name, 0, min(length(var.logical_name), 32))}"
   port = "${var.port}"
   protocol = "HTTP"
