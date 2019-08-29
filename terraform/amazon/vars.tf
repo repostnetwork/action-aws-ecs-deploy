@@ -93,7 +93,7 @@ variable "autoscaling_alarm_statistic" {
 }
 
 variable "autoscaling_alarm_threshold_high" {
-  default = 85
+  default = 50
 }
 
 variable "autoscaling_alarm_threshold_low" {
