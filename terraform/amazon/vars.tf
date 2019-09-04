@@ -65,7 +65,7 @@ variable "is_worker" {
 }
 
 variable "autoscaling_enabled" {
-  default = false
+  default = true
 }
 
 variable "max_healthy_percent" {

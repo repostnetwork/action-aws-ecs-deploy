@@ -13,7 +13,7 @@ ifndef IS_WORKER
     IS_WORKER := false
 endif
 ifndef AUTOSCALING_ENABLED
-    AUTOSCALING_ENABLED := false
+    AUTOSCALING_ENABLED := true
 endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
