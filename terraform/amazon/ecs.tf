@@ -50,7 +50,7 @@ resource "aws_ecs_service" "web" {
   launch_type = "FARGATE"
   health_check_grace_period_seconds = 120
   deployment_minimum_healthy_percent = 100
-  deployment_maximum_percent = "${local.max_healthy_percent}"
+  deployment_maximum_percent = "${var.max_healthy_percent}"
 
   network_configuration {
     security_groups = [
@@ -79,7 +79,7 @@ resource "aws_ecs_service" "worker" {
   desired_count = "${var.container_count}"
   launch_type = "FARGATE"
   deployment_minimum_healthy_percent = 100
-  deployment_maximum_percent = "${local.max_healthy_percent}"
+  deployment_maximum_percent = "${var.max_healthy_percent}"
 
   lifecycle {
     ignore_changes = ["desired_count"]

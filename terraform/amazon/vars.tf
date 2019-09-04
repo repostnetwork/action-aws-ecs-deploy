@@ -68,6 +68,10 @@ variable "autoscaling_enabled" {
   default = false
 }
 
+variable "max_healthy_percent" {
+  default = 600
+}
+
 variable "autoscaling_min_capacity" {
   default = 1
 }
