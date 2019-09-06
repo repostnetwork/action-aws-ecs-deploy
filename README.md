@@ -24,3 +24,11 @@ action "fargate deploy" {
   }
 }
 ```
+
+## Additional Notes
+
+All `.tf` files are loaded in alphabetical order and appended to one another. Order of resource / data definitions does not matter because it is declarative.
+
+If you simply leave out AWS credentials, Terraform will automatically search for saved API credentials (for example, in ~/.aws/credentials) or IAM instance profile credentials. 
+
+`terraform init` is used to set up environment, enabling the rest of the commands.
