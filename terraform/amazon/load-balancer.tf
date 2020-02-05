@@ -3,12 +3,7 @@ resource "aws_alb" "main" {
   load_balancer_type = "application"
   name = "${var.logical_name}-lb"
   subnets = [
-    "subnet-066f6b4d",
-    "subnet-27351b43",
-    "subnet-8cc4b8a3",
-    "subnet-ac78bca3",
-    "subnet-f6e898ab",
-    "subnet-fc6f2ac3"]
+    "${data.aws_subnet.default.*.id}"]
   security_groups = [
     "${aws_security_group.lb.id}"]
 }
