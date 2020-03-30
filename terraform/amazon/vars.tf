@@ -77,7 +77,7 @@ variable "autoscaling_min_capacity" {
 }
 
 variable "autoscaling_max_capacity" {
-  default = 4
+  default = 8
 }
 
 variable "autoscaling_alarm_evaluation_periods" {
