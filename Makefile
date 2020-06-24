@@ -3,6 +3,7 @@ AWS_REGION := ${AWS_REGION}
 PORT := ${PORT}
 CONTAINER_COUNT := ${CONTAINER_COUNT}
 AUTOSCALING_MIN_CAPACITY := ${AUTOSCALING_MIN_CAPACITY}
+AUTOSCALING_MAX_CAPACITY := ${AUTOSCALING_MAX_CAPACITY}
 LOGICAL_NAME := ${LOGICAL_NAME}
 CPU := ${CPU}
 ENV := ${ENV}
@@ -24,6 +25,7 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "port=$(PORT)" \
 		-var "container_count=$(CONTAINER_COUNT)" \
 		-var "autoscaling_min_capacity=$(AUTOSCALING_MIN_CAPACITY)" \
+		-var "autoscaling_max_capacity=$(AUTOSCALING_MAX_CAPACITY)" \
 		-var "cpu=$(CPU)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
