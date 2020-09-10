@@ -11,6 +11,7 @@ MEMORY := ${MEMORY}
 TERRAFORM_BUCKET := repost-terraform-${ENV}
 GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 IS_WORKER := ${IS_WORKER}
+DOMAIN_NAME := ${DOMAIN_NAME}
 ifndef IS_WORKER
     IS_WORKER := false
 endif
@@ -32,6 +33,7 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "logical_name=$(LOGICAL_NAME)" \
 		-var "bucket=$(TERRAFORM_BUCKET)" \
 		-var "is_worker=$(IS_WORKER)" \
+		-var "domain_name=$(DOMAIN_NAME)" \
 		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)"
 
 .PHONY: aws-init
