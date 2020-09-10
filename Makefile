@@ -18,6 +18,9 @@ endif
 ifndef AUTOSCALING_ENABLED
     AUTOSCALING_ENABLED := true
 endif
+ifndef DOMAIN_NAME
+    DOMAIN_NAME := default
+endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
 TERRAFORM_FLAGS :=
