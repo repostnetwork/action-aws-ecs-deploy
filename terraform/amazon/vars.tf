@@ -55,6 +55,10 @@ variable "env" {
   description = "Either 'staging' or 'production'"
 }
 
+variable "domain_name" {
+  description = "Default is repostnetworktesting.com for staging and repostnetwork.com for prod"
+}
+
 variable "health_check_endpoint" {
   default = "/actuator/health"
 }
