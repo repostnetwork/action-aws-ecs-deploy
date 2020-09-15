@@ -8,7 +8,7 @@ LOGICAL_NAME := ${LOGICAL_NAME}
 CPU := ${CPU}
 ENV := ${ENV}
 MEMORY := ${MEMORY}
-TERRAFORM_BUCKET := repost-terraform-${ENV}
+TERRAFORM_BUCKET := ${TERRAFORM_BUCKET}
 GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 IS_WORKER := ${IS_WORKER}
 DOMAIN_NAME := ${DOMAIN_NAME}
@@ -20,6 +20,9 @@ ifndef AUTOSCALING_ENABLED
 endif
 ifndef DOMAIN_NAME
     DOMAIN_NAME := default
+endif
+ifndef TERRAFORM_BUCKET
+    TERRAFORM_BUCKET := repost-terraform-${ENV}
 endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
