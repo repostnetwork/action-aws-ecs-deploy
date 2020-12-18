@@ -53,7 +53,7 @@ resource "aws_appautoscaling_policy" "down" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
-  count               = "${var.autoscaling_enabled == "true" ? 1 : 0}"
+  count               = "${var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "cpu" ? 1 : 0}"
   alarm_name          = "${var.logical_name}-CPUUtilization-High"
   alarm_description   = "Managed by Terraform"
   alarm_actions       = ["${aws_appautoscaling_policy.up.arn}"]
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_low" {
-  count               = "${var.autoscaling_enabled == "true" ? 1 : 0}"
+  count               = "${var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "cpu" ? 1 : 0}"
   alarm_name          = "${var.logical_name}-CPUUtilization-Low"
   alarm_description   = "Managed by Terraform"
   alarm_actions       = ["${aws_appautoscaling_policy.down.arn}"]
@@ -91,5 +91,45 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_low" {
   dimensions {
     ClusterName = "${var.cluster_name}"
     ServiceName = "${var.logical_name}"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_high" {
+  count               = "${var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "queue" ? 1 : 0}"
+  alarm_name          = "${var.logical_name}-ApproximateAgeOfOldestMessage-High"
+  alarm_description   = "Managed by Terraform"
+  alarm_actions       = ["${aws_appautoscaling_policy.up.arn}"]
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "${var.autoscaling_alarm_evaluation_periods}"
+  metric_name         = "ApproximateAgeOfOldestMessage"
+  namespace           = "AWS/SQS"
+  period              = "${var.autoscaling_alarm_period}"
+  statistic           = "${var.autoscaling_alarm_statistic}"
+  threshold           = "${var.autoscaling_alarm_threshold_high}"
+  datapoints_to_alarm = "${var.autoscaling_datapoints_to_alarm}"
+
+  dimensions {
+    QueueName = "${var.autoscaling_queue_name}"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
+  count               = "${var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "queue" ? 1 : 0}"
+  alarm_name          = "${var.logical_name}-ApproximateAgeOfOldestMessage-Low"
+  alarm_description   = "Managed by Terraform"
+  alarm_actions       = ["${aws_appautoscaling_policy.down.arn}"]
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "${var.autoscaling_alarm_evaluation_periods}"
+  metric_name         = "ApproximateAgeOfOldestMessage"
+  namespace           = "AWS/SQS"
+  period              = "${var.autoscaling_alarm_period}"
+  statistic           = "${var.autoscaling_alarm_statistic}"
+  threshold           = "${var.autoscaling_alarm_threshold_low}"
+  datapoints_to_alarm = "${var.autoscaling_datapoints_to_alarm}"
+
+  dimensions {
+    QueueName = "${var.autoscaling_queue_name}"
   }
 }

@@ -33,6 +33,10 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "container_count=$(CONTAINER_COUNT)" \
 		-var "autoscaling_min_capacity=$(AUTOSCALING_MIN_CAPACITY)" \
 		-var "autoscaling_max_capacity=$(AUTOSCALING_MAX_CAPACITY)" \
+		-var "autoscaling_alarm_threshold_high=$(AUTOSCALING_ALARM_THRESHOLD_HIGH)" \
+		-var "autoscaling_alarm_threshold_low=$(AUTOSCALING_ALARM_THRESHOLD_LOW)" \
+		-var "autoscaling_resource_type=$(AUTOSCALING_RESOURCE_TYPE)" \
+		-var "autoscaling_queue_name=$(AUTOSCALING_QUEUE_NAME)" \
 		-var "cpu=$(CPU)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
