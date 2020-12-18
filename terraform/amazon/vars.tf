@@ -104,6 +104,14 @@ variable "autoscaling_alarm_threshold_low" {
   default = 20
 }
 
+variable "autoscaling_resource_type" {
+  default = "cpu" // or queue
+}
+
+variable "autoscaling_queue_name" {
+  default = ""
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
