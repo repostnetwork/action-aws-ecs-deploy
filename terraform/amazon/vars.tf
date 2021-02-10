@@ -116,6 +116,11 @@ variable "autoscaling_queue_name" {
   default = ""
 }
 
+variable "idle_timeout" {
+  description = "The number of seconds to wait before an idle connection is closed."
+  default     = 60
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"

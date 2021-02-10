@@ -16,6 +16,7 @@ ENV AUTOSCALING_RESOURCE_TYPE "cpu"
 ENV AUTOSCALING_QUEUE_NAME ""
 ENV CPU "256"
 ENV MEMORY "512"
+ENV IDLE_TIMEOUT "60"
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src
