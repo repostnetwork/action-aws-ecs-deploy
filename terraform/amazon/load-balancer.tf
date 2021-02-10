@@ -6,6 +6,7 @@ resource "aws_alb" "main" {
     "${data.aws_subnet.default.*.id}"]
   security_groups = [
     "${aws_security_group.lb.id}"]
+  idle_timeout = "${var.idle_timeout}"
 }
 
 resource "aws_alb_target_group" "app" {
