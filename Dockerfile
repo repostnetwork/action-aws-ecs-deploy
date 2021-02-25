@@ -17,6 +17,7 @@ ENV AUTOSCALING_QUEUE_NAME ""
 ENV CPU "256"
 ENV MEMORY "512"
 ENV IDLE_TIMEOUT "60"
+ENV HEALTH_CHECK_ENDPOINT "/actuator/health"
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src
