@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - plan
+name: '[plan] Verify Terraform Plan'
+jobs:
+  build:
+    name: '[plan] Create AWS Configure Answers'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: '[plan] Setup AWS Credentials'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: '[plan] Copy Plan Dockerfile'
+        run: cp Dockerfile.plan Dockerfile
+      - name: '[plan] Build Docker Image'
+        run: docker build -t plan .
+      - name: '[plan] Run Plan'
+        run: docker run plan
