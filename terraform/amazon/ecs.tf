@@ -66,6 +66,10 @@ resource "aws_ecs_service" "web" {
     container_port = "${var.port}"
   }
 
+  service_registries {
+    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
+  }
+
   depends_on = [
     "aws_alb_listener.https"
   ]
@@ -91,5 +95,9 @@ resource "aws_ecs_service" "worker" {
     subnets = [
       "${data.aws_subnet.default.*.id}"]
     assign_public_ip = true
+  }
+
+  service_registries {
+    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
   }
 }
