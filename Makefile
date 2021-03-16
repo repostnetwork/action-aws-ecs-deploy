@@ -13,6 +13,8 @@ GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 IS_WORKER := ${IS_WORKER}
 DOMAIN_NAME := ${DOMAIN_NAME}
 IDLE_TIMEOUT := ${IDLE_TIMEOUT}
+WAF_ARN := ${WAF_ARN}
+
 ifndef IS_WORKER
     IS_WORKER := false
 endif
@@ -46,7 +48,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "is_worker=$(IS_WORKER)" \
 		-var "domain_name=$(DOMAIN_NAME)" \
 		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)" \
-		-var "idle_timeout=$(IDLE_TIMEOUT)"
+		-var "idle_timeout=$(IDLE_TIMEOUT)" \
+		-var "waf_arn=$(WAF_ARN)"
 
 .PHONY: aws-init
 aws-init:
