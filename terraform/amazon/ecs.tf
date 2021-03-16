@@ -66,7 +66,7 @@ resource "aws_ecs_service" "web" {
     container_port = "${var.port}"
   }
   service_registries {
-    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
+    registry_arn = "${aws_service_discovery_service.internal.arn}"
   }
 
   depends_on = [
@@ -89,7 +89,7 @@ resource "aws_ecs_service" "worker" {
   }
 
   service_registries {
-    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
+    registry_arn = "${aws_service_discovery_service.internal.arn}"
   }
 
   network_configuration {
