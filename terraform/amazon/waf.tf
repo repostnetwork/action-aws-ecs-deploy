@@ -10,7 +10,7 @@ resource "aws_wafv2_web_acl" "web_acl" {
     name     = "block-public-actuator-traffic"
     priority = 1
 
-    override_action {
+    action {
       count {}
     }
 
