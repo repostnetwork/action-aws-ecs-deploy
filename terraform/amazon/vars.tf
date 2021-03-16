@@ -121,7 +121,7 @@ variable "idle_timeout" {
   default     = 60
 }
 
-variable "waf-arn" {
+variable "waf_arn" {
   description = "ARN Reference for WAF"
 }
 
