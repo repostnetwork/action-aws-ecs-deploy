@@ -121,6 +121,10 @@ variable "idle_timeout" {
   default     = 60
 }
 
+variable "waf-arn" {
+  description = "ARN Reference for WAF"
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"

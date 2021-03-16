@@ -18,6 +18,7 @@ ENV CPU "256"
 ENV MEMORY "512"
 ENV IDLE_TIMEOUT "60"
 ENV HEALTH_CHECK_ENDPOINT "/actuator/health"
+ENV WAF_ARN ""
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src
