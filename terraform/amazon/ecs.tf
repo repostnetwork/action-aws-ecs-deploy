@@ -66,6 +66,7 @@ resource "aws_ecs_service" "web" {
     container_port = "${var.port}"
   }
   service_registries {
+    port = "${var.port}"
     registry_arn = "${aws_service_discovery_service.internal.arn}"
   }
 
@@ -90,6 +91,7 @@ resource "aws_ecs_service" "worker" {
 
   service_registries {
     registry_arn = "${aws_service_discovery_service.internal.arn}"
+    port = "${var.port}"
   }
 
   network_configuration {
