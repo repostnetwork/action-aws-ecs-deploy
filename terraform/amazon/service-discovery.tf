@@ -1,7 +1,7 @@
 resource "aws_service_discovery_private_dns_namespace" "internal_dns" {
   name        = "service.${var.env}"
   description = "Service Discovery for Internal Services"
-  vpc         = "${data.aws_vpc.default.id}"
+  vpc         = aws_vpc.default.id
 }
 
 resource "aws_service_discovery_service" "internal" {
