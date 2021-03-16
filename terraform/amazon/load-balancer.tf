@@ -38,6 +38,7 @@ resource "aws_alb_listener" "https" {
 }
 
 resource "aws_wafv2_web_acl_association" "web_acl_association" {
+  count = "${var.is_worker ? 0 : 1}" # no load balancer if worker
   resource_arn = "${aws_alb.main.arn}"
   web_acl_arn  = "${aws_wafv2_web_acl.web_acl.arn}"
 } 
