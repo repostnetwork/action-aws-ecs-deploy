@@ -65,6 +65,9 @@ resource "aws_ecs_service" "web" {
     container_name = "${var.logical_name}"
     container_port = "${var.port}"
   }
+  service_registries {
+    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
+  }
 
   depends_on = [
     "aws_alb_listener.https"
@@ -83,6 +86,10 @@ resource "aws_ecs_service" "worker" {
 
   lifecycle {
     ignore_changes = ["desired_count"]
+  }
+
+  service_registries {
+    registry_arn = "${aws_service_discovery_private_dns_namespace.internal.arn}"
   }
 
   network_configuration {
