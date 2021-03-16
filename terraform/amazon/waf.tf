@@ -11,7 +11,7 @@ resource "aws_wafv2_web_acl" "web_acl" {
     priority = 1
 
     action {
-      count {}
+      block {}
     }
 
     statement {
