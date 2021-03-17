@@ -49,7 +49,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "domain_name=$(DOMAIN_NAME)" \
 		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)" \
 		-var "idle_timeout=$(IDLE_TIMEOUT)" \
-		-var "waf_arn=$(WAF_ARN)"
+		-var "waf_arn=$(WAF_ARN)" \
+		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}"
 
 .PHONY: aws-init
 aws-init:

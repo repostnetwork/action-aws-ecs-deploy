@@ -4,10 +4,6 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_service_discovery_private_dns_namespace" "internal_dns" {
-  name = "service.${var.env}"
-}
-
 data "aws_subnet_ids" "default" {
   vpc_id = "${data.aws_vpc.default.id}"
 }

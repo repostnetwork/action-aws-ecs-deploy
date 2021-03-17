@@ -19,6 +19,7 @@ ENV MEMORY "512"
 ENV IDLE_TIMEOUT "60"
 ENV HEALTH_CHECK_ENDPOINT "/actuator/health"
 ENV WAF_ARN ""
+ENV SERVICE_DISCOVERY_NAMESPACE_ID ""
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src
