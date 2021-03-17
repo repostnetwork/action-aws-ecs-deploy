@@ -46,7 +46,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "is_worker=$(IS_WORKER)" \
 		-var "domain_name=$(DOMAIN_NAME)" \
 		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)" \
-		-var "idle_timeout=$(IDLE_TIMEOUT)"
+		-var "idle_timeout=$(IDLE_TIMEOUT)" \
+		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)"
 
 .PHONY: aws-init
 aws-init:
