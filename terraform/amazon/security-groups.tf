@@ -51,7 +51,7 @@ resource "aws_security_group" "ecs_tasks" {
     from_port = "${var.port}"
     to_port = "${var.port}"
     security_groups = ["${aws_security_group.lb.id}"]
-    cidr_block = ["${data.aws_vpc.default.cidr_block}"]
+    cidr_blocks = ["${data.aws_vpc.default.cidr_block}"]
   }
 
   egress {
