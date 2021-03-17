@@ -52,7 +52,7 @@ resource "aws_security_group" "ecs_tasks" {
     to_port = "${var.port}"
     security_groups = [
       "${aws_security_group.lb.id}",
-      "${aws_vpc.default.cidr_block}
+      "${aws_vpc.default.cidr_block}"
       ]
   }
 
