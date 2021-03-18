@@ -5,7 +5,8 @@ resource "aws_appautoscaling_target" "target" {
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = "${var.autoscaling_min_capacity}"
   max_capacity       = "${var.autoscaling_max_capacity}"
-  depends_on = ["aws_ecs_service.web", "aws_ecs_service.worker"]
+  # TODO: Remove WEB-Service & Worker Service when Available
+  depends_on = ["aws_ecs_service.web", "aws_ecs_service.worker", "aws_ecs_service.web-service", "aws_ecs_service.web-woerker"]
 }
 
 # Scale capacity up by one
