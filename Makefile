@@ -13,6 +13,10 @@ GITHUB_REPOSITORY := ${GITHUB_REPOSITORY}
 IS_WORKER := ${IS_WORKER}
 DOMAIN_NAME := ${DOMAIN_NAME}
 IDLE_TIMEOUT := ${IDLE_TIMEOUT}
+WAF_ARN := ${WAF_ARN}
+SERVICE_DISCOVERY_NAMESPACE_ID := ${SERVICE_DISCOVERY_NAMESPACE_ID}
+HEALTH_CHECK_ENDPOINT := ${HEALTH_CHECK_ENDPOINT}
+
 ifndef IS_WORKER
     IS_WORKER := false
 endif
@@ -47,6 +51,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "domain_name=$(DOMAIN_NAME)" \
 		-var "autoscaling_enabled=$(AUTOSCALING_ENABLED)" \
 		-var "idle_timeout=$(IDLE_TIMEOUT)" \
+		-var "waf_arn=$(WAF_ARN)" \
+		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}" \
 		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)"
 
 .PHONY: aws-init
