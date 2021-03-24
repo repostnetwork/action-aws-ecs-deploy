@@ -121,14 +121,6 @@ variable "idle_timeout" {
   default     = 60
 }
 
-variable "waf_arn" {
-  description = "ARN Reference for WAF"
-}
-
-variable "service_discovery_namespace_id" {
-  description = "Namespace ID of Service Discovery"
-}
-
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
