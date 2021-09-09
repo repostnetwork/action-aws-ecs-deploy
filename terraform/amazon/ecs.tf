@@ -58,7 +58,7 @@ resource "aws_ecs_service" "web" {
     security_groups = [
       aws_security_group.ecs_tasks.id,
     ]
-    subnets = data.aws_subnet.default.*.id
+    subnets = data.aws_subnet_ids.default
     assign_public_ip = true
   }
 
@@ -99,7 +99,7 @@ resource "aws_ecs_service" "worker" {
     security_groups = [
       aws_security_group.ecs_tasks.id,
     ]
-    subnets = data.aws_subnet.default.*.id
+    subnets = data.aws_subnet_ids.default
     assign_public_ip = true
   }
 }
