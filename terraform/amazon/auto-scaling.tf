@@ -78,7 +78,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
   threshold           = var.autoscaling_alarm_threshold_high
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
-  dimensions {
+  dimensions = {
     ClusterName = var.cluster_name
     ServiceName = var.logical_name
   }
@@ -103,7 +103,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_low" {
   threshold           = var.autoscaling_alarm_threshold_low
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
-  dimensions {
+  dimensions = {
     ClusterName = var.cluster_name
     ServiceName = var.logical_name
   }
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_high" 
   threshold           = var.autoscaling_alarm_threshold_high
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
-  dimensions {
+  dimensions = {
     QueueName = var.autoscaling_queue_name
   }
 }
@@ -152,7 +152,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
   threshold           = var.autoscaling_alarm_threshold_low
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
-  dimensions {
+  dimensions = {
     QueueName = var.autoscaling_queue_name
   }
 }
