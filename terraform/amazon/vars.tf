@@ -2,13 +2,13 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable logical_name {
+variable "logical_name" {
   description = "The base name to use for all aws resources."
 }
 
 variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
-  default = "8080"
+  default     = "8080"
 }
 
 variable "container_count" {
@@ -44,7 +44,7 @@ variable "ecs_task_execution_role" {
 
 variable "ecr_path" {
   description = "Path of ECR containing all images"
-  default = "ecr_path"
+  default     = "ecr_path"
 }
 
 variable "github_repository" {
@@ -65,7 +65,7 @@ variable "health_check_endpoint" {
 
 variable "is_worker" {
   description = "Boolean: True if this ecs task is a worker. False otherwise."
-  default = false
+  default     = false
 }
 
 variable "autoscaling_enabled" {
@@ -132,12 +132,13 @@ variable "service_discovery_namespace_id" {
 provider "aws" {
   version = ">= 1.47.0"
   profile = "default"
-  region = "${var.region}"
+  region  = var.region
 }
 
 terraform {
   backend "s3" {
     encrypt = true
-    region = "us-east-1"
+    region  = "us-east-1"
   }
 }
+
