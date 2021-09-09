@@ -70,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
   #   var.alarm_pagerduty_sns
   # ]
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "${var.autoscaling_alarm_evaluation_periods}"
+  evaluation_periods  = var.autoscaling_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
   period              = var.autoscaling_alarm_period

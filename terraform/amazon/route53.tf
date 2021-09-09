@@ -5,6 +5,6 @@ resource "aws_route53_record" "main" {
   type    = "CNAME"
   ttl     = "300"
   records = [
-    aws_alb.main.dns_name
+    aws_alb.main[0].dns_name
   ]
 }
