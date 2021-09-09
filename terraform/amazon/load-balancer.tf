@@ -2,7 +2,7 @@ resource "aws_alb" "main" {
   count              = var.is_worker ? 0 : 1 # no load balancer if worker
   load_balancer_type = "application"
   name               = "${var.logical_name}-lb"
-  subnets            = data.aws_subnet.default.*.id
+  subnets            = data.aws_subnet_ids.default
   security_groups = [
     aws_security_group.lb.id,
   ]
