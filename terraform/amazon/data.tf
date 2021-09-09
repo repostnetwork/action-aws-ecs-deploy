@@ -10,8 +10,8 @@ data "aws_subnet_ids" "default" {
 }
 
 data "aws_subnet" "default" {
-  count = length(data.aws_subnet_ids.default.ids)
-  id    = data.aws_subnet_ids.default.ids[count.index]
+  for_each = data.aws_subnet_ids.default.ids
+  id       = each.value
 }
 
 data "aws_ecs_cluster" "main" {
