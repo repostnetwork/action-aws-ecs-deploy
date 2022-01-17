@@ -44,6 +44,7 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "autoscaling_alarm_network_threshold_high=$(AUTOSCALING_ALARM_NETWORK_THRESHOLD_HIGH)" \
 		-var "autoscaling_resource_type=$(AUTOSCALING_RESOURCE_TYPE)" \
 		-var "autoscaling_queue_name=$(AUTOSCALING_QUEUE_NAME)" \
+		-var "autoscaling_adjustment=$(AUTOSCALING_ADJUSTMENT)" \
 		-var "cpu=$(CPU)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
