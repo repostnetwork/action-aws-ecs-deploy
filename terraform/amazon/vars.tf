@@ -104,6 +104,14 @@ variable "autoscaling_alarm_threshold_high" {
   default = 60
 }
 
+variable "autoscaling_alarm_network_threshold_high" {
+  default = 100
+}
+
+variable "autoscaling_alarm_network_threshold_low" {
+  default = 20
+}
+
 variable "autoscaling_alarm_threshold_low" {
   default = 20
 }
@@ -114,6 +122,10 @@ variable "autoscaling_resource_type" {
 
 variable "autoscaling_queue_name" {
   default = ""
+}
+
+variable "autoscaling_adjustment" {
+  default = 1
 }
 
 variable "idle_timeout" {

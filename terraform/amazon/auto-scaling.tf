@@ -26,7 +26,7 @@ resource "aws_appautoscaling_policy" "up" {
 
     step_adjustment {
       metric_interval_lower_bound = 0
-      scaling_adjustment          = 1
+      scaling_adjustment          = var.autoscaling_adjustment
     }
   }
 
@@ -48,11 +48,53 @@ resource "aws_appautoscaling_policy" "down" {
 
     step_adjustment {
       metric_interval_lower_bound = 0
-      scaling_adjustment          = -1
+      scaling_adjustment          = var.autoscaling_adjustment
     }
   }
 
   depends_on = [aws_appautoscaling_target.target]
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_high" {
+  count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "network" ? 1 : 0
+  alarm_name        = "${var.logical_name}-RequestCountPerTarget-High"
+  alarm_description = "Managed by Terraform"
+  alarm_actions     = [aws_appautoscaling_policy.up[0].arn]
+
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = var.autoscaling_alarm_evaluation_periods
+  metric_name         = "RequestCountPerTarget"
+  namespace           = "AWS/ApplicationELB"
+  period              = "1"
+  statistic           = "Sum"
+  threshold           = var.autoscaling_alarm_network_threshold_high
+  datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
+
+  dimensions = {
+    LoadBalancer = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_low" {
+  count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "network" ? 1 : 0
+  alarm_name        = "${var.logical_name}-RequestCountPerTarget-Low"
+  alarm_description = "Managed by Terraform"
+  alarm_actions     = [aws_appautoscaling_policy.down[0].arn]
+
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = var.autoscaling_alarm_evaluation_periods
+  metric_name         = "RequestCountPerTarget"
+  namespace           = "AWS/ApplicationELB"
+  period              = "1"
+  statistic           = "Sum"
+  threshold           = var.autoscaling_alarm_network_threshold_low
+  datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
+
+  dimensions = {
+    LoadBalancer = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_rpm_high" {
