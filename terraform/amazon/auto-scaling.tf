@@ -72,7 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
   dimensions = {
-    LoadBalancer = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
+    TargetGroup = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
   }
 }
 
@@ -93,7 +93,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
 
   dimensions = {
-    LoadBalancer = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
+    TargetGroup = regex("targetgroup/.+/[a-z0-9]+", aws_alb_target_group.app[0].arn)
   }
 }
 
