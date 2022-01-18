@@ -66,7 +66,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_
   evaluation_periods  = var.autoscaling_alarm_evaluation_periods
   metric_name         = "RequestCountPerTarget"
   namespace           = "AWS/ApplicationELB"
-  period              = "1"
+  period              = var.autoscaling_alarm_period
   statistic           = "Sum"
   threshold           = var.autoscaling_alarm_network_threshold_high
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
@@ -87,7 +87,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_network_traffic_
   evaluation_periods  = var.autoscaling_alarm_evaluation_periods
   metric_name         = "RequestCountPerTarget"
   namespace           = "AWS/ApplicationELB"
-  period              = "1"
+  period              = var.autoscaling_alarm_period
   statistic           = "Sum"
   threshold           = var.autoscaling_alarm_network_threshold_low
   datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
