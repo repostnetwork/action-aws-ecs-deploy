@@ -48,7 +48,7 @@ resource "aws_appautoscaling_policy" "down" {
 
     step_adjustment {
       metric_interval_lower_bound = 0
-      scaling_adjustment          = var.autoscaling_adjustment
+      scaling_adjustment          = -var.autoscaling_adjustment
     }
   }
 
