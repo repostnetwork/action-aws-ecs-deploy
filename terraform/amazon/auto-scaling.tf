@@ -11,7 +11,7 @@ resource "aws_appautoscaling_target" "target" {
   ]
 }
 
-# Scale capacity up by one
+# Scale capacity up
 resource "aws_appautoscaling_policy" "up" {
   count              = var.autoscaling_enabled == "true" ? 1 : 0
   name               = "${var.logical_name}-ecs-scale-up"
@@ -33,7 +33,7 @@ resource "aws_appautoscaling_policy" "up" {
   depends_on = [aws_appautoscaling_target.target]
 }
 
-# Scale capacity down by one
+# Scale capacity down
 resource "aws_appautoscaling_policy" "down" {
   count              = var.autoscaling_enabled == "true" ? 1 : 0
   name               = "${var.logical_name}-ecs-scale-down"
@@ -47,8 +47,7 @@ resource "aws_appautoscaling_policy" "down" {
     metric_aggregation_type = "Maximum"
 
     step_adjustment {
-      metric_interval_lower_bound = 0
-      scaling_adjustment          = -var.autoscaling_adjustment
+      scaling_adjustment = -var.autoscaling_adjustment
     }
   }
 
