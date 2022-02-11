@@ -143,7 +143,7 @@ variable "service_discovery_namespace_id" {
 
 provider "aws" {
   version = ">= 1.47.0"
-  profile = "default"
+  profile = ""
   region  = var.region
 }
 
