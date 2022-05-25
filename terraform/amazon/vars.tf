@@ -133,6 +133,11 @@ variable "idle_timeout" {
   default     = 60
 }
 
+variable "health_check_grace_period" {
+  description = "The number of seconds before starting healthchecks",
+  default = 60
+}
+
 variable "waf_arn" {
   description = "ARN Reference for WAF"
 }

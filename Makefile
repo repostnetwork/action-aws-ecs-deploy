@@ -19,6 +19,7 @@ IDLE_TIMEOUT := ${IDLE_TIMEOUT}
 WAF_ARN := ${WAF_ARN}
 SERVICE_DISCOVERY_NAMESPACE_ID := ${SERVICE_DISCOVERY_NAMESPACE_ID}
 HEALTH_CHECK_ENDPOINT := ${HEALTH_CHECK_ENDPOINT}
+HEALTH_CHECK_GRACE_PERIOD := ${HEALTH_CHECK_GRACE_PERIOD}
 
 ifndef IS_WORKER
     IS_WORKER := false
@@ -59,7 +60,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "idle_timeout=$(IDLE_TIMEOUT)" \
 		-var "waf_arn=$(WAF_ARN)" \
 		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}" \
-		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)"
+		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)" \
+		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)"
 
 .PHONY: aws-init
 aws-init:
