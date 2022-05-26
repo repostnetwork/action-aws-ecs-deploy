@@ -50,7 +50,7 @@ resource "aws_ecs_service" "web" {
   task_definition = aws_ecs_task_definition.main.arn
   desired_count = var.container_count
   launch_type = "FARGATE"
-  health_check_grace_period_seconds = 120
+  health_check_grace_period_seconds = var.health_check_grace_period
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent = var.max_healthy_percent
 
