@@ -183,7 +183,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_high" {
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_kds_stream_age_high" {
   count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "kds-age" ? 1 : 0
   alarm_name        = "${var.logical_name}-GetRecords.IteratorAgeMilliseconds-High"
   alarm_description = "Managed by Terraform"
@@ -204,7 +204,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_high" 
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_kds_stream_age_low" {
   count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "kds-age" ? 1 : 0
   alarm_name        = "${var.logical_name}-GetRecords.IteratorAgeMilliseconds-Low"
   alarm_description = "Managed by Terraform"
