@@ -96,6 +96,14 @@ variable "autoscaling_alarm_period" {
   default = 60
 }
 
+variable "autoscaling_alarm_period_high" {
+  default = 60
+}
+
+variable "autoscaling_alarm_period_low" {
+  default = 60
+}
+
 variable "autoscaling_alarm_statistic" {
   default = "Average"
 }
@@ -121,6 +129,10 @@ variable "autoscaling_resource_type" {
 }
 
 variable "autoscaling_queue_name" {
+  default = ""
+}
+
+variable "autoscaling_kds_stream_name" {
   default = ""
 }
 

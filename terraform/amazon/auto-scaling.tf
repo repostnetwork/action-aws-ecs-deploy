@@ -183,3 +183,45 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
   }
 }
 
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_high" {
+  count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "kds-age" ? 1 : 0
+  alarm_name        = "${var.logical_name}-GetRecords.IteratorAgeMilliseconds-High"
+  alarm_description = "Managed by Terraform"
+  alarm_actions     = [aws_appautoscaling_policy.up[0].arn]
+
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = var.autoscaling_alarm_evaluation_periods
+  metric_name         = "GetRecords.IteratorAgeMilliseconds"
+  namespace           = "AWS/Kinesis"
+  period              = var.autoscaling_alarm_period_high
+  statistic           = var.autoscaling_alarm_statistic
+  threshold           = var.autoscaling_alarm_threshold_high
+  datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
+
+  dimensions = {
+    StreamName = var.autoscaling_kds_stream_name
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_queue_age_low" {
+  count             = var.autoscaling_enabled == "true" && var.autoscaling_resource_type == "kds-age" ? 1 : 0
+  alarm_name        = "${var.logical_name}-GetRecords.IteratorAgeMilliseconds-Low"
+  alarm_description = "Managed by Terraform"
+  alarm_actions     = [aws_appautoscaling_policy.down[0].arn]
+
+  # ok_actions          = ["${var.alarm_pagerduty_sns}"]
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = var.autoscaling_alarm_evaluation_periods
+  metric_name         = "GetRecords.IteratorAgeMilliseconds"
+  namespace           = "AWS/Kinesis"
+  period              = var.autoscaling_alarm_period_low
+  statistic           = var.autoscaling_alarm_statistic
+  threshold           = var.autoscaling_alarm_threshold_low
+  datapoints_to_alarm = var.autoscaling_datapoints_to_alarm
+
+  dimensions = {
+    StreamName = var.autoscaling_kds_stream_name
+  }
+}
+
