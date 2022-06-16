@@ -44,8 +44,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "autoscaling_max_capacity=$(AUTOSCALING_MAX_CAPACITY)" \
 		-var "autoscaling_alarm_threshold_high=$(AUTOSCALING_ALARM_THRESHOLD_HIGH)" \
 		-var "autoscaling_alarm_threshold_low=$(AUTOSCALING_ALARM_THRESHOLD_LOW)" \
-        -var "autoscaling_alarm_network_period_low=$(AUTOSCALING_ALARM_NETWORK_PERIOD_LOW)" \
-        -var "autoscaling_alarm_network_period_high=$(AUTOSCALING_ALARM_NETWORK_PERIOD_HIGH)" \
+        -var "autoscaling_alarm_period_low=$(AUTOSCALING_ALARM_PERIOD_LOW)" \
+        -var "autoscaling_alarm_period_high=$(AUTOSCALING_ALARM_PERIOD_HIGH)" \
 		-var "autoscaling_alarm_network_threshold_low=$(AUTOSCALING_ALARM_NETWORK_THRESHOLD_LOW)" \
 		-var "autoscaling_alarm_network_threshold_high=$(AUTOSCALING_ALARM_NETWORK_THRESHOLD_HIGH)" \
 		-var "autoscaling_resource_type=$(AUTOSCALING_RESOURCE_TYPE)" \
