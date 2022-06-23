@@ -158,6 +158,48 @@ variable "service_discovery_namespace_id" {
   description = "Namespace ID of Service Discovery"
 }
 
+variable "use_efs" {
+  description = "Flag indicating whether to use EFS during task creation."
+  default = false
+}
+
+variable "efs_name" {
+  description = "Name of EFS resource."
+}
+
+variable "efs_file_system_id" {
+  description = "File System Id of the EFS resource."
+}
+
+variable "efs_access_point_id" {
+  description = "ID of the EFS access point."
+}
+
+variable "main_vars" {
+  default = {
+    repository_url = data.aws_ecr_repository.main.repository_url,
+    logical_name = var.logical_name,
+    region = var.region,
+    port = var.port,
+    health_check_endpoint = var.health_check_endpoint,
+    health_check_grace_period = var.health_check_grace_period
+  }
+}
+
+variable "main_efs_vars" {
+  default = {
+    repository_url = data.aws_ecr_repository.main.repository_url,
+    logical_name = var.logical_name,
+    region = var.region,
+    port = var.port,
+    health_check_endpoint = var.health_check_endpoint,
+    health_check_grace_period = var.health_check_grace_period,
+    efs_name = var.efs_name,
+    efs_file_system_id = var.efs_file_system_id,
+    efs_access_point_id = var.efs_access_point_id
+  }
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = ""
@@ -170,4 +212,3 @@ terraform {
     region  = "us-east-1"
   }
 }
-

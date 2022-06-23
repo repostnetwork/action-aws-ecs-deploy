@@ -9,38 +9,9 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = <<DEFINITION
-[
-  {
-    "cpu": 0,
-    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "name": "${var.logical_name}",
-    "networkMode": "awsvpc",
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-      "awslogs-group": "ecs/${var.logical_name}",
-      "awslogs-region": "${var.region}",
-      "awslogs-stream-prefix": "${var.logical_name}"
-      }
-    },
-    "healthCheck": {
-      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
-      "interval": 45,
-      "timeout" : 5,
-      "retries" : 3,
-      "startPeriod" : ${var.health_check_grace_period}
-    },
-    "portMappings": [
-      {
-        "containerPort": ${var.port},
-        "hostPort": ${var.port}
-      }
-    ]
-  }
-]
-DEFINITION
-
+  container_definitions = var.use_efs ?
+    templatefile("${path.module}/task-definitions/main-efs.tftpl", var.main_efs_vars) :
+    templatefile("${path.module}/task-definitions/main.tftpl", var.main_vars)
 }
 
 resource "aws_ecs_service" "web" {
@@ -103,4 +74,3 @@ resource "aws_ecs_service" "worker" {
     assign_public_ip = true
   }
 }
-
