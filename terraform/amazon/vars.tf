@@ -175,8 +175,8 @@ variable "efs_access_point_id" {
   description = "ID of the EFS access point."
 }
 
-variable "main_vars" {
-  default = {
+locals {
+  main_vars = {
     repository_url = data.aws_ecr_repository.main.repository_url,
     logical_name = var.logical_name,
     region = var.region,
@@ -184,10 +184,7 @@ variable "main_vars" {
     health_check_endpoint = var.health_check_endpoint,
     health_check_grace_period = var.health_check_grace_period
   }
-}
-
-variable "main_efs_vars" {
-  default = {
+  main_efs_vars = {
     repository_url = data.aws_ecr_repository.main.repository_url,
     logical_name = var.logical_name,
     region = var.region,

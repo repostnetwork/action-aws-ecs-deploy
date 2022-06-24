@@ -9,9 +9,7 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = var.use_efs ?
-    templatefile("${path.module}/task-definitions/main-efs.tftpl", var.main_efs_vars) :
-    templatefile("${path.module}/task-definitions/main.tftpl", var.main_vars)
+  container_definitions = var.use_efs ? templatefile("${path.module}/task-definitions/main-efs.tftpl", locals.main_efs_vars) : templatefile("${path.module}/task-definitions/main.tftpl", locals.main_vars)
 }
 
 resource "aws_ecs_service" "web" {
