@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = var.use_efs ? templatefile("${path.module}/task-definitions/main-efs.tftpl", locals.main_efs_vars) : templatefile("${path.module}/task-definitions/main.tftpl", locals.main_vars)
+  container_definitions = var.use_efs ? templatefile("${path.module}/task-definitions/main-efs.tftpl", local.main_efs_vars) : templatefile("${path.module}/task-definitions/main.tftpl", local.main_vars)
 }
 
 resource "aws_ecs_service" "web" {
@@ -70,27 +70,5 @@ resource "aws_ecs_service" "worker" {
     ]
     subnets = data.aws_subnet_ids.default.ids
     assign_public_ip = true
-  }
-}
-
-locals {
-  main_vars = {
-    repository_url = data.aws_ecr_repository.main.repository_url,
-    logical_name = var.logical_name,
-    region = var.region,
-    port = var.port,
-    health_check_endpoint = var.health_check_endpoint,
-    health_check_grace_period = var.health_check_grace_period
-  }
-  main_efs_vars = {
-    repository_url = data.aws_ecr_repository.main.repository_url,
-    logical_name = var.logical_name,
-    region = var.region,
-    port = var.port,
-    health_check_endpoint = var.health_check_endpoint,
-    health_check_grace_period = var.health_check_grace_period,
-    efs_name = var.efs_name,
-    efs_file_system_id = var.efs_file_system_id,
-    efs_access_point_id = var.efs_access_point_id
   }
 }
