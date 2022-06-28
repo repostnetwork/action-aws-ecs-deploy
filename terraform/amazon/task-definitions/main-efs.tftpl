@@ -18,12 +18,12 @@ ${
         "interval": 45,
         "timeout" : 5,
         "retries" : 3,
-        "startPeriod" : health_check_grace_period
+        "startPeriod" : tonumber(health_check_grace_period)
       },
       "portMappings": [
         {
-          "containerPort": port,
-          "hostPort": port
+          "containerPort": tonumber("${port}"),
+          "hostPort": tonumber("${port}")
         }
       ],
       "volumes": [
