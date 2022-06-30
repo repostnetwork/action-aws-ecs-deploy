@@ -31,6 +31,7 @@ ENV USE_EFS "false"
 ENV EFS_NAME ""
 ENV EFS_FILE_SYSTEM_ID ""
 ENV EFS_ACCESS_POINT_ID ""
+ENV EFS_PATH ""
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src

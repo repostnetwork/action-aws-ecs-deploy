@@ -68,7 +68,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "use_efs=$(USE_EFS)" \
 		-var "efs_name=$(EFS_NAME)" \
 		-var "efs_file_system_id=$(EFS_FILE_SYSTEM_ID)" \
-		-var "efs_access_point_id=$(EFS_ACCESS_POINT_ID)"
+		-var "efs_access_point_id=$(EFS_ACCESS_POINT_ID)" \
+		-var "efs_path=$(EFS_PATH)"
 
 .PHONY: aws-init
 aws-init:

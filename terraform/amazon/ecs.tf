@@ -53,13 +53,49 @@ resource "aws_ecs_task_definition" "efs" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = aws_ecs_task_definition.main.container_definitions
+  container_definitions = <<DEFINITION
+[
+  {
+    "cpu": 0,
+    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
+    "name": "${var.logical_name}",
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+      "awslogs-group": "ecs/${var.logical_name}",
+      "awslogs-region": "${var.region}",
+      "awslogs-stream-prefix": "${var.logical_name}"
+      }
+    },
+    "healthCheck": {
+      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
+      "interval": 45,
+      "timeout" : 5,
+      "retries" : 3,
+      "startPeriod" : ${var.health_check_grace_period}
+    },
+    "portMappings": [
+      {
+        "containerPort": ${var.port},
+        "hostPort": ${var.port}
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": ${var.efs_name},
+        "containerPath": ${var.efs_path}
+      }
+    ]
+  }
+]
+DEFINITION
 
   volume {
     name = var.efs_name
     efs_volume_configuration {
       file_system_id          = var.efs_file_system_id
-      root_directory          = "/"
+      root_directory          = var.efs_path
       transit_encryption      = "ENABLED"
       transit_encryption_port = 2049
       authorization_config {

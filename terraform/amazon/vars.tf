@@ -175,6 +175,11 @@ variable "efs_access_point_id" {
   description = "ID of the EFS access point."
 }
 
+variable "efs_path" {
+  description = "Path for the root directory of the EFS resource"
+  default = "/"
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = ""
