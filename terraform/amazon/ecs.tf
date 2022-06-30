@@ -1,5 +1,4 @@
 resource "aws_ecs_task_definition" "main" {
-  count        = var.use_efs ? 0 : 1
   family       = var.logical_name
   network_mode = "awsvpc"
   requires_compatibilities = [
@@ -44,7 +43,6 @@ DEFINITION
 }
 
 resource "aws_ecs_task_definition" "efs" {
-  count        = var.use_efs ? 1 : 0
   family       = var.logical_name
   network_mode = "awsvpc"
   requires_compatibilities = [
@@ -55,37 +53,7 @@ resource "aws_ecs_task_definition" "efs" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = <<DEFINITION
-[
-  {
-    "cpu": 0,
-    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "name": "${var.logical_name}",
-    "networkMode": "awsvpc",
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-      "awslogs-group": "ecs/${var.logical_name}",
-      "awslogs-region": "${var.region}",
-      "awslogs-stream-prefix": "${var.logical_name}"
-      }
-    },
-    "healthCheck": {
-      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
-      "interval": 45,
-      "timeout" : 5,
-      "retries" : 3,
-      "startPeriod" : ${var.health_check_grace_period}
-    },
-    "portMappings": [
-      {
-        "containerPort": ${var.port},
-        "hostPort": ${var.port}
-      }
-    ]
-  }
-]
-DEFINITION
+  container_definitions = aws_ecs_task_definition.main.container_definitions
 
   volume {
     name = var.efs_name
