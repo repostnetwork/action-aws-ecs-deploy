@@ -180,6 +180,27 @@ variable "efs_path" {
   default = "/"
 }
 
+locals {
+  main_vars = {
+    repository_url = data.aws_ecr_repository.main.repository_url,
+    logical_name = var.logical_name,
+    region = var.region,
+    port = var.port,
+    health_check_endpoint = var.health_check_endpoint,
+    health_check_grace_period = var.health_check_grace_period
+  }
+  main_efs_vars = {
+    repository_url = data.aws_ecr_repository.main.repository_url,
+    logical_name = var.logical_name,
+    region = var.region,
+    port = var.port,
+    health_check_endpoint = var.health_check_endpoint,
+    health_check_grace_period = var.health_check_grace_period,
+    efs_name = var.efs_name,
+    efs_path = var.efs_path
+  }
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = ""
