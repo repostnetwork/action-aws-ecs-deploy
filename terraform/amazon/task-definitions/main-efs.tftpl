@@ -1,0 +1,37 @@
+${
+  jsonencode([
+    {
+      "cpu": 0,
+      "image": "${repository_url}:latest",
+      "name": "${logical_name}",
+      "networkMode": "awsvpc",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+        "awslogs-group": "ecs/${logical_name}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${logical_name}"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:${port}${health_check_endpoint} || exit 1"],
+        "interval": 45,
+        "timeout" : 5,
+        "retries" : 3,
+        "startPeriod" : tonumber("${health_check_grace_period}")
+      },
+      "portMappings": [
+        {
+          "containerPort": tonumber("${port}"),
+          "hostPort": tonumber("${port}")
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": ${efs_name},
+          "containerPath": ${efs_path}
+        }
+      ]
+    }
+  ])
+}

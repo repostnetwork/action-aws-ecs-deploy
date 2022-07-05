@@ -9,37 +9,7 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
-  container_definitions = <<DEFINITION
-[
-  {
-    "cpu": 0,
-    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "name": "${var.logical_name}",
-    "networkMode": "awsvpc",
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-      "awslogs-group": "ecs/${var.logical_name}",
-      "awslogs-region": "${var.region}",
-      "awslogs-stream-prefix": "${var.logical_name}"
-      }
-    },
-    "healthCheck": {
-      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
-      "interval": 45,
-      "timeout" : 5,
-      "retries" : 3,
-      "startPeriod" : ${var.health_check_grace_period}
-    },
-    "portMappings": [
-      {
-        "containerPort": ${var.port},
-        "hostPort": ${var.port}
-      }
-    ]
-  }
-]
-DEFINITION
+  container_definitions = templatefile("${path.module}/task-definitions/main.tftpl", local.main_vars)
 }
 
 resource "aws_ecs_task_definition" "efs" {
@@ -52,6 +22,8 @@ resource "aws_ecs_task_definition" "efs" {
   memory             = var.memory
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
+
+  container_definitions = templatefile("${path.module}/task-definitions/main-efs.tftpl", local.main_efs_vars)
 
   volume {
     name = var.efs_name
@@ -66,44 +38,6 @@ resource "aws_ecs_task_definition" "efs" {
       }
     }
   }
-
-  container_definitions = <<DEFINITION
-[
-  {
-    "cpu": 0,
-    "image": "${data.aws_ecr_repository.main.repository_url}:latest",
-    "name": "${var.logical_name}",
-    "networkMode": "awsvpc",
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-      "awslogs-group": "ecs/${var.logical_name}",
-      "awslogs-region": "${var.region}",
-      "awslogs-stream-prefix": "${var.logical_name}"
-      }
-    },
-    "healthCheck": {
-      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
-      "interval": 45,
-      "timeout" : 5,
-      "retries" : 3,
-      "startPeriod" : ${var.health_check_grace_period}
-    },
-    "portMappings": [
-      {
-        "containerPort": ${var.port},
-        "hostPort": ${var.port}
-      }
-    ],
-    "mountPoints": [
-      {
-        "sourceVolume": ${var.efs_name},
-        "containerPath": ${var.efs_path}
-      }
-    ]
-  }
-]
-DEFINITION
 }
 
 resource "aws_ecs_service" "web" {
