@@ -26,13 +26,6 @@ ${
           "hostPort": tonumber("${port}")
         }
       ],
-      "entryPoint" : [
-        "sh",
-        "-c"
-      ],
-      "command": [
-        "df -h"
-      ]
       "mountPoints": [
         {
           "sourceVolume": "${efs_name}",
