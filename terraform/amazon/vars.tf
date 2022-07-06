@@ -174,7 +174,6 @@ variable "efs_file_system_id" {
 
 variable "efs_access_point_id" {
   description = "ID of the EFS access point."
-  default = ""
 }
 
 variable "efs_path" {
