@@ -169,7 +169,6 @@ variable "efs_name" {
 
 variable "efs_file_system_id" {
   description = "File System Id of the EFS resource."
-  default = "foo"
 }
 
 variable "efs_access_point_id" {
@@ -178,7 +177,6 @@ variable "efs_access_point_id" {
 
 variable "efs_path" {
   description = "Path for the root directory of the EFS resource"
-  default = "/"
 }
 
 locals {
