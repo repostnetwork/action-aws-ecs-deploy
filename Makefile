@@ -64,12 +64,7 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "waf_arn=$(WAF_ARN)" \
 		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}" \
 		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)" \
-		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)" \
-		-var "use_efs=$(USE_EFS)" \
-		-var "efs_name=$(EFS_NAME)" \
-		-var "efs_file_system_id=$(EFS_FILE_SYSTEM_ID)" \
-		-var "efs_access_point_id=$(EFS_ACCESS_POINT_ID)" \
-		-var "efs_path=$(EFS_PATH)"
+		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)"
 
 .PHONY: aws-init
 aws-init:
