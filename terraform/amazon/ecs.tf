@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "efs" {
 }
 
 output "aws_ecs_task_definition_arn" {
-  value = "${element(concat(aws_ecs_task_definition.main.arn, aws_ecs_task_definition.efs.arn, list("")), 0)}"
+  value = "${element(concat(aws_ecs_task_definition.main.*.arn, aws_ecs_task_definition.efs.*.arn, list("")), 0)}"
 }
 
 resource "aws_ecs_service" "web" {
