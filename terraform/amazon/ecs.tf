@@ -1,4 +1,5 @@
 resource "aws_ecs_task_definition" "main" {
+  count        = var.use_efs ? 0 : 1
   family       = var.logical_name
   network_mode = "awsvpc"
   requires_compatibilities = [
@@ -13,6 +14,7 @@ resource "aws_ecs_task_definition" "main" {
 }
 
 resource "aws_ecs_task_definition" "efs" {
+  count        = var.use_efs ? 1 : 0
   family       = var.logical_name
   network_mode = "awsvpc"
   requires_compatibilities = [
@@ -44,7 +46,7 @@ resource "aws_ecs_service" "web" {
   count = var.is_worker ? 0 : 1 # no load balancer if worker
   name = var.logical_name
   cluster = data.aws_ecs_cluster.main.id
-  task_definition = var.use_efs ? aws_ecs_task_definition.efs.arn : aws_ecs_task_definition.main.arn
+  task_definition = aws_ecs_task_definition[0].arn
   desired_count = var.container_count
   launch_type = "FARGATE"
   health_check_grace_period_seconds = var.health_check_grace_period
@@ -77,7 +79,7 @@ resource "aws_ecs_service" "worker" {
   count = var.is_worker ? 1 : 0 # no load balancer if worker
   name = var.logical_name
   cluster = data.aws_ecs_cluster.main.id
-  task_definition = var.use_efs ? aws_ecs_task_definition.efs.arn : aws_ecs_task_definition.main.arn
+  task_definition = aws_ecs_task_definition[0].arn
   desired_count = var.container_count
   launch_type = "FARGATE"
   deployment_minimum_healthy_percent = 100
