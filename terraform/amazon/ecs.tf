@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "efs" {
 }
 
 locals {
-  aws_ecs_task_definition_arn {
+  aws_ecs_task_definition_arn = {
     value = element(concat(aws_ecs_task_definition.main.*.arn, aws_ecs_task_definition.efs.*.arn, list("")), 0)
   }
 }
