@@ -158,6 +158,27 @@ variable "service_discovery_namespace_id" {
   description = "Namespace ID of Service Discovery"
 }
 
+variable "use_efs" {
+  description = "Flag indicating whether to use EFS during task creation."
+  default = false
+}
+
+variable "efs_name" {
+  description = "Name of EFS resource."
+}
+
+variable "efs_file_system_id" {
+  description = "File System Id of the EFS resource."
+}
+
+variable "efs_access_point_id" {
+  description = "ID of the EFS access point."
+}
+
+variable "efs_path" {
+  description = "Path for the root directory of the EFS resource"
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = ""
@@ -170,4 +191,3 @@ terraform {
     region  = "us-east-1"
   }
 }
-

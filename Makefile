@@ -20,6 +20,11 @@ WAF_ARN := ${WAF_ARN}
 SERVICE_DISCOVERY_NAMESPACE_ID := ${SERVICE_DISCOVERY_NAMESPACE_ID}
 HEALTH_CHECK_ENDPOINT := ${HEALTH_CHECK_ENDPOINT}
 HEALTH_CHECK_GRACE_PERIOD := ${HEALTH_CHECK_GRACE_PERIOD}
+USE_EFS := ${USE_EFS}
+EFS_NAME := ${EFS_NAME}
+EFS_FILE_SYSTEM_ID := ${EFS_FILE_SYSTEM_ID}
+EFS_ACCESS_POINT_ID := ${EFS_ACCESS_POINT_ID}
+EFS_PATH := ${EFS_PATH}
 
 ifndef IS_WORKER
     IS_WORKER := false
@@ -64,7 +69,12 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "waf_arn=$(WAF_ARN)" \
 		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}" \
 		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)" \
-		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)"
+		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)" \
+		-var "use_efs=$(USE_EFS)" \
+		-var "efs_name=$(EFS_NAME)" \
+		-var "efs_file_system_id=$(EFS_FILE_SYSTEM_ID)" \
+		-var "efs_access_point_id=$(EFS_ACCESS_POINT_ID)" \
+		-var "efs_path=$(EFS_PATH)"
 
 .PHONY: aws-init
 aws-init:
