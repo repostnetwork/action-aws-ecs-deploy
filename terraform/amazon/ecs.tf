@@ -9,6 +9,20 @@ resource "aws_ecs_task_definition" "main" {
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
 
+  volume {
+    name = var.efs_name
+    efs_volume_configuration {
+      file_system_id          = var.efs_file_system_id
+      root_directory          = var.efs_path
+      transit_encryption      = "ENABLED"
+      transit_encryption_port = 2049
+      authorization_config {
+        access_point_id   = var.efs_access_point_id
+        iam               = "ENABLED"
+      }
+    }
+  }
+
   container_definitions = <<DEFINITION
 [
   {
@@ -35,6 +49,12 @@ resource "aws_ecs_task_definition" "main" {
       {
         "containerPort": ${var.port},
         "hostPort": ${var.port}
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "${var.efs_name}",
+        "containerPath": "${var.efs_path}"
       }
     ]
   }
@@ -103,4 +123,3 @@ resource "aws_ecs_service" "worker" {
     assign_public_ip = true
   }
 }
-
