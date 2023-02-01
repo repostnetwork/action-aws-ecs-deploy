@@ -6,6 +6,11 @@ variable "logical_name" {
   description = "The base name to use for all aws resources."
 }
 
+variable "tag" {
+  description = "The image tag to use."
+  default     =  "latest"
+}
+
 variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
   default     = "8080"
