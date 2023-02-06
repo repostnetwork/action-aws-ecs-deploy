@@ -20,6 +20,7 @@ WAF_ARN := ${WAF_ARN}
 SERVICE_DISCOVERY_NAMESPACE_ID := ${SERVICE_DISCOVERY_NAMESPACE_ID}
 HEALTH_CHECK_ENDPOINT := ${HEALTH_CHECK_ENDPOINT}
 HEALTH_CHECK_GRACE_PERIOD := ${HEALTH_CHECK_GRACE_PERIOD}
+TAG := ${TAG}
 
 ifndef IS_WORKER
     IS_WORKER := false
@@ -32,6 +33,9 @@ ifndef DOMAIN_NAME
 endif
 ifndef TERRAFORM_BUCKET
     TERRAFORM_BUCKET := repost-terraform-${ENV}
+endif
+ifndef TAG
+    TAG := latest
 endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
@@ -56,6 +60,7 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "env=$(ENV)" \
 		-var "memory=$(MEMORY)" \
 		-var "logical_name=$(LOGICAL_NAME)" \
+		-var "tag=$(TAG)" \
 		-var "bucket=$(TERRAFORM_BUCKET)" \
 		-var "is_worker=$(IS_WORKER)" \
 		-var "domain_name=$(DOMAIN_NAME)" \
