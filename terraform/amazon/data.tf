@@ -13,7 +13,7 @@ data "aws_subnets" "default" {
 }
 
 data "aws_subnet" "default" {
-  for_each = data.aws_subnet_ids.default.ids
+  for_each = data.aws_subnets.default.ids
   id       = each.value
 }
 
