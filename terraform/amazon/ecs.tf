@@ -13,7 +13,6 @@ resource "aws_ecs_task_definition" "main" {
     name = var.efs_name
     efs_volume_configuration {
       file_system_id          = var.efs_file_system_id
-      root_directory          = var.efs_path
       transit_encryption      = "ENABLED"
       transit_encryption_port = 2049
       authorization_config {
