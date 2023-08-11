@@ -163,6 +163,12 @@ variable "service_discovery_namespace_id" {
   description = "Namespace ID of Service Discovery"
 }
 
+variable "volume_size" {
+  description = "The default volume size"
+  type        = number
+  default     = 21
+}
+
 provider "aws" {
   version = ">= 1.47.0"
   profile = ""

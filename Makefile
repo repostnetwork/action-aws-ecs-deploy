@@ -21,6 +21,7 @@ SERVICE_DISCOVERY_NAMESPACE_ID := ${SERVICE_DISCOVERY_NAMESPACE_ID}
 HEALTH_CHECK_ENDPOINT := ${HEALTH_CHECK_ENDPOINT}
 HEALTH_CHECK_GRACE_PERIOD := ${HEALTH_CHECK_GRACE_PERIOD}
 TAG := ${TAG}
+VOLUME_SIZE := ${VOLUME_SIZE}
 
 ifndef IS_WORKER
     IS_WORKER := false
@@ -36,6 +37,9 @@ ifndef TERRAFORM_BUCKET
 endif
 ifndef TAG
     TAG := latest
+endif
+ifndef VOLUME_SIZE
+    VOLUME_SIZE := 21
 endif
 
 AWS_DIR=$(CURDIR)/terraform/amazon
@@ -69,7 +73,8 @@ AWS_TERRAFORM_FLAGS = -var "region=$(AWS_REGION)" \
 		-var "waf_arn=$(WAF_ARN)" \
 		-var "service_discovery_namespace_id=${SERVICE_DISCOVERY_NAMESPACE_ID}" \
 		-var "health_check_endpoint=$(HEALTH_CHECK_ENDPOINT)" \
-		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)"
+		-var "health_check_grace_period=$(HEALTH_CHECK_GRACE_PERIOD)" \
+		-var "volume_size=$(VOLUME_SIZE)"
 
 .PHONY: aws-init
 aws-init:
