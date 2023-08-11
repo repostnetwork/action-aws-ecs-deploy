@@ -27,6 +27,7 @@ ENV HEALTH_CHECK_ENDPOINT "/actuator/health"
 ENV HEALTH_CHECK_GRACE_PERIOD "120"
 ENV WAF_ARN ""
 ENV SERVICE_DISCOVERY_NAMESPACE_ID ""
+ENV VOLUME_SIZE "21"
 
 COPY terraform /usr/src/terraform
 COPY Makefile /usr/src
