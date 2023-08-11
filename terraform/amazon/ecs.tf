@@ -14,9 +14,6 @@ resource "aws_ecs_task_definition" "main" {
   {
     "cpu": 0,
     "image": "${data.aws_ecr_repository.main.repository_url}:${var.tag}",
-    "ephemeralStorage": {
-      "sizeInGiB": ${var.volume_size}
-    },
     "name": "${var.logical_name}",
     "networkMode": "awsvpc",
     "logConfiguration": {
