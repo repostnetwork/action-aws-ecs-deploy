@@ -8,7 +8,7 @@ resource "aws_ecs_task_definition" "main" {
   memory             = var.memory
   task_role_arn      = data.aws_iam_role.task_container_role.arn
   execution_role_arn = data.aws_iam_role.task_execution_role.arn
-  ephemeral_storage = {
+  ephemeral_storage {
     size_in_gb = var.volume_size
   }
   container_definitions = <<DEFINITION
