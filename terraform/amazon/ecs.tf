@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "main" {
       }
     },
     "healthCheck": {
-      "command": ["CMD-SHELL", "curl -f http://localhost:${var.port}${var.health_check_endpoint} || exit 1"],
+      "command": ["CMD-SHELL", "pgrep java || exit 1"],
       "interval": 45,
       "timeout" : 5,
       "retries" : 3,
